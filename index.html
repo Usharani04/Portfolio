@@ -711,9 +711,17 @@ function drawCanvasFallback(){
 let canvasRAF;
 function loopCanvas(){ drawCanvasFallback(); canvasRAF = requestAnimationFrame(loopCanvas); }
 
-function useVideo(){ canvas.style.display = 'none'; cancelAnimationFrame(canvasRAF); }
-function useCanvas(){ video.style.display = 'none'; loopCanvas(); }
-video.addEventListener('loadeddata', useVideo);
+function useVideo(){
+  video.style.display = 'block';
+  canvas.style.display = 'none';
+  cancelAnimationFrame(canvasRAF);
+}
+function useCanvas(){
+  video.style.display = 'none';
+  canvas.style.display = 'block';
+  loopCanvas();
+}
+video.addEventListener('canplay', useVideo);
 video.addEventListener('error', useCanvas);
 setTimeout(()=>{ if(video.readyState < 2) useCanvas(); }, 1800);
 
